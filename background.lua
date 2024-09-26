@@ -123,7 +123,6 @@ function Dark()
 							radius = 1.5,
 						},
 					},
-					noise = 100,
 				},
 			},
 			width = "100%",
