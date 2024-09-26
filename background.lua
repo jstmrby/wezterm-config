@@ -1,13 +1,19 @@
 local module = {}
 
 function module.set_bg(config, theme)
-	if theme == "miamiVice" then
+	if theme == "MiamiVice" then
 		config.background = MiamiVice()
-	elseif theme == "ig" then
+	elseif theme == "Ig" then
 		config.background = Ig()
-	else
+	elseif theme == "Dark" then
 		config.background = Dark()
+	else
+		config.background = Opaque()
 	end
+
+	config.window_background_opacity = 0.75
+	config.macos_window_background_blur = 40
+	config.win32_system_backdrop = "Acrylic"
 end
 
 function MiamiVice()
@@ -91,7 +97,8 @@ function Ig()
 end
 
 function Dark()
-	local color1 = "#2c2d30"
+	-- local color1 = "#2c2d30"
+	local color1 = "#35373b"
 	local color2 = "#242628"
 
 	return {
@@ -113,10 +120,25 @@ function Dark()
 						Radial = {
 							cx = 0.95,
 							cy = 0.05,
-							radius = 1,
+							radius = 1.5,
 						},
 					},
 					noise = 100,
+				},
+			},
+			width = "100%",
+			height = "100%",
+		},
+	}
+end
+
+function Opaque()
+	return {
+		{
+			source = {
+				Gradient = {
+					colors = { "#000000cc", "#00000080" },
+					orientation = "Vertical",
 				},
 			},
 			width = "100%",
