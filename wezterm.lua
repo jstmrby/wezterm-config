@@ -1,20 +1,20 @@
--- Pull in the wezterm API
-local wezterm = require("wezterm")
-local font = require("font")
-local background = require("background")
-local windows = require("windows")
+local Config = require('config')
 
--- This will hold the configuration.
-local config = wezterm.config_builder()
+require('utils.wallpapers')
+  -- :set_focus('#000000')
+  -- :set_images_dir(require('wezterm').home_dir .. '/Pictures/Wallpapers/')
+  :set_images()
+  :random()
 
--- This is where you actually apply your config choices
--- For example, changing the color scheme:
-font.set_font(config)
-background.set_bg(config, "Dark")
+require('events.left-status').setup()
+require('events.right-status').setup({ date_format = '%a %H:%M:%S' })
+require('events.tab-title').setup({ hide_active_tab_unseen = false, unseen_icon = 'circle' })
+require('events.new-tab-button').setup()
 
-if wezterm.target_triple == "x86_64-pc-windows-msvc" then
-	windows.default_to_ps(config)
-end
-
--- and finally, return the configuration to wezterm
-return config
+return Config:init()
+  :append(require('config.appearance'))
+  :append(require('config.bindings'))
+  :append(require('config.domains'))
+  :append(require('config.fonts'))
+  :append(require('config.general'))
+  :append(require('config.launch')).options
