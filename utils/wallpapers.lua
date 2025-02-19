@@ -88,7 +88,7 @@ function Wallpaper:_create_opts()
       width = '120%',
       vertical_offset = '-10%',
       horizontal_offset = '-10%',
-      opacity = 0.98,
+      opacity = 0.93,
     },
   }
 end
