@@ -5,6 +5,7 @@
 local wezterm = require('wezterm')
 local Cells = require('utils.cells')
 local OptsValidator = require('utils.opts-validator')
+local colorscheme = require('colors.custom')
 
 ---
 -- =======================================
@@ -94,17 +95,17 @@ local RENDER_VARIANTS = {
 ---@type table<string, Cells.SegmentColors>
 -- stylua: ignore
 local colors = {
-   text_default          = { bg = '#45475A', fg = '#1C1B19' },
-   text_hover            = { bg = '#5D87A3', fg = '#1C1B19' },
-   text_active           = { bg = '#74c7ec', fg = '#11111B' },
+   text_default          = { bg = colorscheme.background, fg = colorscheme.foreground },
+   text_hover            = { bg = colorscheme.foreground, fg = "#111111" },
+   text_active           = { bg = colorscheme.brights[8], fg = "#111111" },
 
-   unseen_output_default = { bg = '#45475A', fg = '#FFA066' },
-   unseen_output_hover   = { bg = '#5D87A3', fg = '#FFA066' },
-   unseen_output_active  = { bg = '#74c7ec', fg = '#FFA066' },
+   unseen_output_default = { bg = colorscheme.background, fg = colorscheme.ansi[4] },
+   unseen_output_hover   = { bg = colorscheme.foreground, fg = colorscheme.ansi[5] },
+   unseen_output_active  = { bg = colorscheme.brights[8], fg = colorscheme.ansi[5] },
 
-   scircle_default       = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#45475A' },
-   scircle_hover         = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#5D87A3' },
-   scircle_active        = { bg = 'rgba(0, 0, 0, 0.4)', fg = '#74C7EC' },
+   scircle_default       = { bg = 'transparent', fg = colorscheme.background },
+   scircle_hover         = { bg = 'transparent', fg = colorscheme.foreground },
+   scircle_active        = { bg = 'transparent', fg = colorscheme.brights[8] },
 }
 
 ---
@@ -147,6 +148,7 @@ local function create_title(process_name, base_title, max_width, inset)
   else
     local padding = max_width - title:len() - inset
     title = title .. string.rep(' ', padding)
+    print('padding title', padding)
   end
 
   return title
@@ -204,7 +206,7 @@ function Tab:new()
 end
 
 ---@param event_opts Event.TabTitleOptions
----@param tab any WezTerm https://wezfurlong.org/wezterm/config/lua/MuxTab/index.html
+---@param tab any WezTerm [tab](https://wezterm.org/config/lua/MuxTab/index.html)
 ---@param max_width number
 function Tab:set_info(event_opts, tab, max_width)
   local process_name = clean_process_name(tab.active_pane.foreground_process_name)
@@ -229,6 +231,7 @@ function Tab:set_info(event_opts, tab, max_width)
     self.title = create_title('', self.locked_title, max_width, inset)
     return
   end
+
   self.title = create_title(process_name, tab.active_pane.title, max_width, inset)
 end
 
@@ -352,15 +355,21 @@ M.setup = function(opts)
   end)
 
   -- BUILTIN EVENT
-  wezterm.on('format-tab-title', function(tab, _tabs, _panes, _config, hover, max_width)
+  wezterm.on('format-tab-title', function(tab, tabs, _panes, _config, hover, _max_width)
+    local calculated_max_width = wezterm.GLOBAL.tabline_max_cols // #tabs
+    local remaining = wezterm.GLOBAL.tabline_max_cols % #tabs
+    if tab.tab_index < remaining then
+      calculated_max_width = calculated_max_width + 1
+    end
+
     if not tab_list[tab.tab_id] then
       tab_list[tab.tab_id] = Tab:new()
-      tab_list[tab.tab_id]:set_info(valid_opts, tab, max_width)
+      tab_list[tab.tab_id]:set_info(valid_opts, tab, calculated_max_width)
       tab_list[tab.tab_id]:create_cells()
       return tab_list[tab.tab_id]:render()
     end
 
-    tab_list[tab.tab_id]:set_info(valid_opts, tab, max_width)
+    tab_list[tab.tab_id]:set_info(valid_opts, tab, calculated_max_width)
     tab_list[tab.tab_id]:update_cells(valid_opts, tab.is_active, hover)
     return tab_list[tab.tab_id]:render()
   end)

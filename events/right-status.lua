@@ -99,7 +99,7 @@ M.setup = function(opts)
     wezterm.log_error(err)
   end
 
-  wezterm.on('update-right-status', function(window, _pane)
+  wezterm.on('update-right-status', function(window)
     local battery_text, battery_icon = battery_info()
 
     cells
