@@ -148,7 +148,6 @@ local function create_title(process_name, base_title, max_width, inset)
   else
     local padding = max_width - title:len() - inset
     title = title .. string.rep(' ', padding)
-    print('padding title', padding)
   end
 
   return title
@@ -355,21 +354,15 @@ M.setup = function(opts)
   end)
 
   -- BUILTIN EVENT
-  wezterm.on('format-tab-title', function(tab, tabs, _panes, _config, hover, _max_width)
-    local calculated_max_width = wezterm.GLOBAL.tabline_max_cols // #tabs
-    local remaining = wezterm.GLOBAL.tabline_max_cols % #tabs
-    if tab.tab_index < remaining then
-      calculated_max_width = calculated_max_width + 1
-    end
-
+  wezterm.on('format-tab-title', function(tab, tabs, _panes, _config, hover, max_width)
     if not tab_list[tab.tab_id] then
       tab_list[tab.tab_id] = Tab:new()
-      tab_list[tab.tab_id]:set_info(valid_opts, tab, calculated_max_width)
+      tab_list[tab.tab_id]:set_info(valid_opts, tab, max_width)
       tab_list[tab.tab_id]:create_cells()
       return tab_list[tab.tab_id]:render()
     end
 
-    tab_list[tab.tab_id]:set_info(valid_opts, tab, calculated_max_width)
+    tab_list[tab.tab_id]:set_info(valid_opts, tab, max_width)
     tab_list[tab.tab_id]:update_cells(valid_opts, tab.is_active, hover)
     return tab_list[tab.tab_id]:render()
   end)
