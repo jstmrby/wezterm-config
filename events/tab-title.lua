@@ -95,17 +95,17 @@ local RENDER_VARIANTS = {
 ---@type table<string, Cells.SegmentColors>
 -- stylua: ignore
 local colors = {
-   text_default          = { bg = colorscheme.background, fg = colorscheme.foreground },
+   text_default          = { bg = '#333333', fg = colorscheme.foreground },
    text_hover            = { bg = colorscheme.foreground, fg = "#111111" },
    text_active           = { bg = colorscheme.brights[8], fg = "#111111" },
 
-   unseen_output_default = { bg = colorscheme.background, fg = colorscheme.ansi[4] },
+   unseen_output_default = { bg = '#333333', fg = colorscheme.ansi[4] },
    unseen_output_hover   = { bg = colorscheme.foreground, fg = colorscheme.ansi[5] },
    unseen_output_active  = { bg = colorscheme.brights[8], fg = colorscheme.ansi[5] },
 
-   scircle_default       = { bg = 'transparent', fg = colorscheme.background },
-   scircle_hover         = { bg = 'transparent', fg = colorscheme.foreground },
-   scircle_active        = { bg = 'transparent', fg = colorscheme.brights[8] },
+   scircle_default       = { bg = '#333333', fg = '#333333' },
+   scircle_hover         = { bg = '#333333', fg = colorscheme.foreground },
+   scircle_active        = { bg = '#333333', fg = colorscheme.brights[8] },
 }
 
 ---

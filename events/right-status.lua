@@ -56,9 +56,9 @@ local charging_icons = {
 ---@type table<string, Cells.SegmentColors>
 -- stylua: ignore
 local colors = {
-   date      = { fg = '#fab387', bg = 'rgba(0, 0, 0, 0.4)' },
-   battery   = { fg = '#f9e2af', bg = 'rgba(0, 0, 0, 0.4)' },
-   separator = { fg = '#74c7ec', bg = 'rgba(0, 0, 0, 0.4)' }
+   date      = { fg = '#fab387', bg = '#333333' },
+   battery   = { fg = '#f9e2af', bg = '#333333' },
+   separator = { fg = '#74c7ec', bg = '#333333' }
 }
 
 local cells = Cells:new()
