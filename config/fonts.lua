@@ -2,7 +2,7 @@ local wezterm = require('wezterm')
 local platform = require('utils.platform')
 
 local font_family = 'IntoneMono Nerd Font Mono'
-local font_size = platform.is_mac and 14 or 12
+local font_size = platform.is_mac and 18 or 16
 local line_height = 1.1
 
 return {
