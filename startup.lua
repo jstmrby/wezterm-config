@@ -6,4 +6,5 @@ return function(config)
 	config.initial_cols = 120
 	config.initial_rows = 28
 	config.max_fps = 120
+	config.window_close_confirmation = "NeverPrompt"
 end
